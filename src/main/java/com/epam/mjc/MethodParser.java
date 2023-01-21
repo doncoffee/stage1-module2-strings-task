@@ -1,5 +1,8 @@
 package com.epam.mjc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MethodParser {
 
     /**
@@ -20,6 +23,30 @@ public class MethodParser {
      * @return {@link MethodSignature} object filled with parsed values from source string
      */
     public MethodSignature parseFunction(String signatureString) {
-        throw new UnsupportedOperationException("You should implement this method.");
+        String[] arr = signatureString.split("\\s+");
+        String accessModifier = null;
+        String returnType = null;
+        String methodName = null;
+        List<MethodSignature.Argument> listOfArguments = new ArrayList<>();
+        for (int i = 0; i < arr.length; ++i) {
+            if (arr[i].equals("public") || arr[i].equals("private")
+                    || arr[i].equals("protected")) {
+                accessModifier = arr[i];
+            } else if (arr[i].contains("(")) {
+                methodName = arr[i].substring(0, arr[i].indexOf("("));
+                returnType = arr[i - 1];
+                i++;
+            }
+        }
+        String[] arrayOfArgs = signatureString.substring(signatureString.indexOf("(") + 1,
+                signatureString.length()).split("\\s+");
+        for (int i = 0; i < arrayOfArgs.length; i++) {
+            if (i % 2 == 0 && arrayOfArgs.length > 1) {
+                String type = arrayOfArgs[i];
+                String argument = arrayOfArgs[++i].substring(0, arrayOfArgs[i].length() - 1);
+                listOfArguments.add(new MethodSignature.Argument(type, argument));
+            }
+        }
+        return new MethodSignature(accessModifier, returnType, methodName, listOfArguments);
     }
 }

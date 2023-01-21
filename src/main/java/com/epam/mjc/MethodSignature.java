@@ -14,6 +14,13 @@ public class MethodSignature {
         this.arguments = arguments;
     }
 
+    public MethodSignature(String accessModifier, String returnType, String methodName, List<Argument> arguments) {
+        this.accessModifier = accessModifier;
+        this.returnType = returnType;
+        this.methodName = methodName;
+        this.arguments = arguments;
+    }
+
     public MethodSignature(String methodName) {
         this(methodName, new ArrayList<>());
     }
